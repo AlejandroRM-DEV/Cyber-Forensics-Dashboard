@@ -10,16 +10,18 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { useLocation, Outlet, Navigate } from "react-router-dom";
 import { Layout, Drawer, Affix } from "antd";
 import Sidenav from "./Sidenav";
 import Header from "./Header";
 import Footer from "./Footer";
+import { UserContext } from "../../contexts/UserContextMangement";
 
 const { Header: AntHeader, Content, Sider } = Layout;
 
-function Main({ children }) {
+function Main() {
+	const context = useContext(UserContext);
   const [visible, setVisible] = useState(false);
   const [placement, setPlacement] = useState("right");
   const [sidenavColor, setSidenavColor] = useState("#1890ff");
@@ -42,6 +44,9 @@ function Main({ children }) {
     }
   }, [pathname]);
 
+  if (!context.user.sub) {
+    return <Navigate to="/sign-in" />;
+  }
   return (
     <Layout
       className={`layout-dashboard ${
@@ -120,7 +125,7 @@ function Main({ children }) {
             />
           </AntHeader>
         )}
-        <Content className="content-ant">{children}</Content>
+        <Content className="content-ant"><Outlet /></Content>
         <Footer />
       </Layout>
     </Layout>

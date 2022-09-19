@@ -1,10 +1,10 @@
 import { Row, Col, Form, Input, Button, AutoComplete, DatePicker, Select, Card } from "antd";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 const Request = () => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const CURRENT_YEAR = new Date().getFullYear();
 	const [form] = Form.useForm();
 
@@ -25,7 +25,7 @@ const Request = () => {
 		form.resetFields();
 	};
 
-	const redirect = () => history.replace("/requests");
+	const redirect = () => navigate("/requests");
 
 	return (
 		<>
@@ -69,7 +69,12 @@ const Request = () => {
 											filterOption={(inputValue, option) =>
 												option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 											}
-											options={[{ value: "Centro de Justicia para las Mujeres", label: "Centro de Justicia para las Mujeres" }]}
+											options={[
+												{
+													value: "Centro de Justicia para las Mujeres",
+													label: "Centro de Justicia para las Mujeres",
+												},
+											]}
 										/>
 									</Form.Item>
 								</Col>

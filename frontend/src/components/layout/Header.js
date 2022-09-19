@@ -10,8 +10,9 @@
   * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { Row, Col, Button } from "antd";
+import { UserContext } from "../../contexts/UserContextMangement";
 
 const profile = [
 	<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" key={0}>
@@ -31,12 +32,14 @@ const toggler = [
 ];
 
 function Header({ onPress }) {
+	const context = useContext(UserContext)
 	useEffect(() => window.scrollTo(0, 0));
 
 	return (
 		<>
 			<Row justify="end" gutter={[24, 0]}>
 				<Col className="header-control">
+					{context.user.nickname}
 					<Button type="link" className="sidebar-toggler" onClick={() => onPress()}>
 						{toggler}
 					</Button>

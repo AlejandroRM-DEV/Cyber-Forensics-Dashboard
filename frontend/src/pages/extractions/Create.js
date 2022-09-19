@@ -1,11 +1,11 @@
 import { Row, Col, Form, Input, Button, AutoComplete, Radio, Select, Card } from "antd";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 const { Option } = Select;
 
 const Extraction = () => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const [form] = Form.useForm();
 	const [requests, setRequests] = useState([]);
 
@@ -46,7 +46,7 @@ const Extraction = () => {
 		form.resetFields();
 	};
 
-	const redirect = () => history.replace("/extractions");
+	const redirect = () => navigate("/extractions");
 
 	return (
 		<>

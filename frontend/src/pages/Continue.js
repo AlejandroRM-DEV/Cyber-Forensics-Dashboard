@@ -1,10 +1,13 @@
-import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useEffect, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import jwt_decode from "jwt-decode";
+import { UserContext } from "../contexts/UserContextMangement";
 
-function Continue({ location }) {
-	const history = useHistory();
+function Continue() {
+	const location = useLocation();
+	const navigate = useNavigate();
+	const context = useContext(UserContext);
 
 	useEffect(() => {
 		fetch(`${process.env.REACT_APP_BACKEND_URL}/login?code=${queryString.parse(location.search).code}`, {
@@ -13,11 +16,13 @@ function Continue({ location }) {
 			.then((res) => res.json())
 			.then((res) => {
 				var decoded = jwt_decode(res.data);
+				context.setUser(decoded);
 				console.log(decoded);
-				history.replace("/home");
+				navigate("/home");
 			})
 			.catch((error) => console.error(error));
-	});
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[]);
 
 	return <></>;
 }
