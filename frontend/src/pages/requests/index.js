@@ -1,6 +1,7 @@
 import { Row, Col, Button, Card, Table } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 const columns = [
 	{
@@ -52,15 +53,9 @@ const columns = [
 
 const Request = () => {
 	const [data, setData] = useState([]);
+	const { response } = useFetch(`${process.env.REACT_APP_BACKEND_URL}/requests`);
 
-	useEffect(() => {
-		fetch(`${process.env.REACT_APP_BACKEND_URL}/requests`, {
-			credentials: "include",
-		})
-			.then((res) => res.json())
-			.then((res) => setData(res.data))
-			.catch((error) => console.error(error));
-	}, []);
+	useEffect(() => response && setData(response.data), [response]);
 
 	return (
 		<>

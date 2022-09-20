@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const helmet = require("helmet");
+const compression = require("compression");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
@@ -15,6 +17,8 @@ app.use(
 		credentials: true,
 	})
 );
+app.use(helmet());
+app.use(compression());
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -61,9 +65,11 @@ app.listen(process.env.PORT || 3001, () => console.log("Started"));
 const forward = async (req, res) => {
 	try {
 		const auth = cache.get(req.cookies.id_token || "");
-		if (auth === undefined) {
+		if (!auth) {
 			res.status(401).json({ ok: false, error: "Missing cookie" });
+			return;
 		}
+		console.log(auth)
 		const response = await axios({
 			method: req.method,
 			url: `${process.env.API_URL}${req.url}`,
@@ -78,7 +84,7 @@ const forward = async (req, res) => {
 		} else if (error.response.status === 403) {
 			res.status(403).json({ ok: false, error: "Permission denied" });
 		} else {
-			res.status(500).json({ ok: false, error: "Whoops, something went wrong" });
+			res.status(500).json({ ok: false, error: "Something went wrong. Please try again, if the error persists contact us for support" });
 		}
 	}
 };
