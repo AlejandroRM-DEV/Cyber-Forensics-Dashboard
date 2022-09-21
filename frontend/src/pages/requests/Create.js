@@ -1,5 +1,7 @@
-import { Row, Col, Form, Input, Button, AutoComplete, DatePicker, Select, Card } from "antd";
+import { useEffect, useState } from "react";
+import { Row, Col, Form, Input, Button, DatePicker, Select, Card } from "antd";
 import { useNavigate } from "react-router-dom";
+import useFetch from "../../hooks/useFetch";
 
 const { Option } = Select;
 
@@ -7,6 +9,10 @@ const Request = () => {
 	const navigate = useNavigate();
 	const CURRENT_YEAR = new Date().getFullYear();
 	const [form] = Form.useForm();
+
+	const [agencies, setAgencies] = useState([]);
+	const { response: listAgencies } = useFetch(`${process.env.REACT_APP_BACKEND_URL}/agencies`);
+	useEffect(() => listAgencies && setAgencies(listAgencies.data), [listAgencies]);
 
 	const onFinish = (values) => {
 		console.log(values);
@@ -44,7 +50,13 @@ const Request = () => {
 							<Row type="flex" justify="space-between" gutter={16}>
 								<Col xs={24}>
 									<Form.Item label="Tipo" name="type" rules={[{ required: true }]}>
-										<Select>
+										<Select
+											showSearch
+											optionFilterProp="children"
+											filterOption={(input, option) =>
+												option.children.toLowerCase().includes(input.toLowerCase())
+											}
+										>
 											<Option value="ADQUISICIÓN DE DATOS DE TELÉFONO CELULAR (DISPOSITIVOS MOVILES)">
 												ADQUISICIÓN DE DATOS DE TELÉFONO CELULAR (DISPOSITIVOS MOVILES)
 											</Option>
@@ -64,22 +76,23 @@ const Request = () => {
 								</Col>
 								<Col xs={24}>
 									<Form.Item label="Agencia" name="agency" rules={[{ required: true }]}>
-										<AutoComplete
-											allowClear
-											filterOption={(inputValue, option) =>
-												option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+										<Select
+											showSearch
+											optionFilterProp="children"
+											filterOption={(input, option) =>
+												option.children.toLowerCase().includes(input.toLowerCase())
 											}
-											options={[
-												{
-													value: "Centro de Justicia para las Mujeres",
-													label: "Centro de Justicia para las Mujeres",
-												},
-											]}
-										/>
+										>
+											{agencies.map((value) => (
+												<Option key={value.agency_id} value={value.agency_id}>
+													{value.name}
+												</Option>
+											))}
+										</Select>
 									</Form.Item>
 								</Col>
 								<Col md={6} xs={24}>
-									<Form.Item label="C.I." name="ci_num" rules={[{ required: true }]}>
+									<Form.Item label="C.I. número" name="ci_num" rules={[{ required: true }]}>
 										<Input />
 									</Form.Item>
 								</Col>
@@ -89,27 +102,27 @@ const Request = () => {
 									</Form.Item>
 								</Col>
 								<Col md={6} xs={24}>
-									<Form.Item label="Oficio" name="o_num">
+									<Form.Item label="Oficio número" name="letter_num">
 										<Input />
 									</Form.Item>
 								</Col>
 								<Col md={6} xs={24}>
-									<Form.Item label="Oficio año" name="o_year">
+									<Form.Item label="Oficio año" name="letter_year">
 										<Input />
 									</Form.Item>
 								</Col>
 								<Col md={6} xs={24}>
-									<Form.Item label="Fecha oficio" name="o_date" rules={[{ required: true }]}>
+									<Form.Item label="Fecha de oficio" name="letter_date" rules={[{ required: true }]}>
 										<DatePicker />
 									</Form.Item>
 								</Col>
 								<Col md={6} xs={24}>
-									<Form.Item label="Fecha presentación" name="date" rules={[{ required: true }]}>
+									<Form.Item label="Fecha de presentación" name="submission_date" rules={[{ required: true }]}>
 										<DatePicker />
 									</Form.Item>
 								</Col>
 								<Col md={12} xs={24}>
-									<Form.Item label="Ciudadano" name="citizen">
+									<Form.Item label="Autorizado por (nombre)" name="authorized_by">
 										<Input />
 									</Form.Item>
 								</Col>

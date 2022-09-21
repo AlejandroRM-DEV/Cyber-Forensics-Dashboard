@@ -5,16 +5,6 @@ import useFetch from "../../hooks/useFetch";
 
 const columns = [
 	{
-		title: "TIPO",
-		dataIndex: "type",
-		key: "type",
-	},
-	{
-		title: "AGENCIA",
-		dataIndex: "agency",
-		key: "agency",
-	},
-	{
 		title: "CI NÚMERO",
 		dataIndex: "ci_num",
 		key: "ci_num",
@@ -26,36 +16,46 @@ const columns = [
 	},
 	{
 		title: "OFICIO NÚMERO",
-		dataIndex: "o_num",
-		key: "o_num",
+		dataIndex: "letter_num",
+		key: "letter_num",
 	},
 	{
 		title: "OFICIO AÑO",
-		dataIndex: "o_year",
-		key: "o_year",
+		dataIndex: "letter_year",
+		key: "letter_year",
 	},
 	{
 		title: "OFICIO FECHA",
-		dataIndex: "o_date",
-		key: "o_date",
+		dataIndex: "letter_date",
+		key: "letter_date",
 	},
 	{
-		title: "FECHA",
-		dataIndex: "date",
-		key: "date",
+		title: "FECHA PRESENTACIÓN",
+		dataIndex: "submission_date",
+		key: "submission_date",
 	},
 	{
-		title: "CIUDADANO(A)",
-		dataIndex: "citizen",
-		key: "citizen",
+		title: "TIPO",
+		dataIndex: "type",
+		key: "type",
+	},
+	{
+		title: "AGENCIA",
+		dataIndex: "agency",
+		key: "agency",
+	},
+	{
+		title: "AUTORIZADO POR",
+		dataIndex: "authorized_by",
+		key: "authorized_by",
 	},
 ];
 
 const Request = () => {
 	const [data, setData] = useState([]);
-	const { response } = useFetch(`${process.env.REACT_APP_BACKEND_URL}/requests`);
+	const { response: requests } = useFetch(`${process.env.REACT_APP_BACKEND_URL}/requests`);
 
-	useEffect(() => response && setData(response.data), [response]);
+	useEffect(() => requests && setData(requests.data), [requests]);
 
 	return (
 		<>

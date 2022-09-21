@@ -6,7 +6,7 @@ const jwt = require("express-jwt");
 const jwks = require("jwks-rsa");
 const bodyParser = require("body-parser");
 const guard = require("express-jwt-permissions")();
-const { Request } = require("./models");
+const { sequelize, Request, Agency } = require("./models");
 
 const app = express();
 
@@ -28,7 +28,18 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get("/agencies", async (req, res) => {
+	Agency.findAll({ order: sequelize.col("name") })
+		.then((agencies) => {
+			res.json({ ok: true, data: agencies });
+		})
+		.catch((err) => {
+			res.status(500).json({ ok: false, error: err });
+		});
+});
+
 app.get("/requests", guard.check(["read:requests"]), async (req, res) => {
+	console.log(req.headers['x-user-id'])
 	Request.findAll()
 		.then((users) => {
 			res.json({ ok: true, data: users });
@@ -39,7 +50,7 @@ app.get("/requests", guard.check(["read:requests"]), async (req, res) => {
 });
 
 app.post("/requests", guard.check(["create:requests"]), async (req, res) => {
-	Request.create(req.body)
+	Request.create({ ...req.body, user_id: req.headers['x-user-id'] })
 		.then((id) => {
 			res.json({ ok: true, data: id });
 		})

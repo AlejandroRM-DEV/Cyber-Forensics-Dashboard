@@ -17,9 +17,7 @@ function Continue() {
 		if (response) {
 			context.setUser(jwt_decode(response.data));
 			navigate("/home");
-		} else if (error) {
-			console.error(error);
-		}
+		} 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [response, error]);
 

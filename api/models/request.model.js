@@ -23,23 +23,27 @@ module.exports = (sequelize, DataTypes) =>
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			},
-			o_num: {
+			letter_num: {
 				type: DataTypes.INTEGER,
 				allowNull: true,
 			},
-			o_year: {
+			letter_year: {
 				type: DataTypes.INTEGER,
 				allowNull: true,
 			},
-			o_date: {
+			letter_date: {
 				type: DataTypes.DATE,
 				allowNull: false,
 			},
-			date: {
+			submission_date: {
 				type: DataTypes.DATE,
 				allowNull: false,
 			},
-			citizen: {
+			authorized_by: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			user_id: {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},

@@ -6,6 +6,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const jwt_decode = require('jwt-decode');
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
 
@@ -40,7 +41,6 @@ app.get("/login", async (req, res) => {
 	axios
 		.post(`${process.env.AUTH0_ISSUER}/oauth/token`, params)
 		.then((response) => {
-			console.log(response.data);
 			cache.set(response.data.id_token, response.data, response.data.expires_in);
 			res.cookie(`id_token`, response.data.id_token, {
 				secure: process.env.NODE_ENV === "production",
@@ -55,6 +55,7 @@ app.get("/login", async (req, res) => {
 		});
 });
 
+app.get("/agencies", async (req, res) => forward(req, res));
 app.get("/requests", async (req, res) => forward(req, res));
 app.post("/requests", async (req, res) => forward(req, res));
 app.get("/extractions", async (req, res) => forward(req, res));
@@ -69,12 +70,14 @@ const forward = async (req, res) => {
 			res.status(401).json({ ok: false, error: "Missing cookie" });
 			return;
 		}
-		console.log(auth)
 		const response = await axios({
 			method: req.method,
 			url: `${process.env.API_URL}${req.url}`,
 			data: req.body,
-			headers: { Authorization: `Bearer ${auth.access_token}` },
+			headers: {
+				Authorization: `Bearer ${auth.access_token}`,
+				'x-user-id': jwt_decode(auth.access_token).sub,
+			},
 		});
 		res.json(response.data);
 	} catch (error) {
@@ -84,7 +87,10 @@ const forward = async (req, res) => {
 		} else if (error.response.status === 403) {
 			res.status(403).json({ ok: false, error: "Permission denied" });
 		} else {
-			res.status(500).json({ ok: false, error: "Something went wrong. Please try again, if the error persists contact us for support" });
+			res.status(500).json({
+				ok: false,
+				error: "Something went wrong. Please try again, if the error persists contact us for support",
+			});
 		}
 	}
 };
