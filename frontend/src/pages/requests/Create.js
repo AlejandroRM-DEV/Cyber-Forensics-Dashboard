@@ -36,7 +36,7 @@ const Request = () => {
 	return (
 		<>
 			<Row type="flex" justify="space-between" gutter={16}>
-				<Col md={12} xs={24}>
+				<Col lg={12} xs={24}>
 					<Card bordered={false} className="criclebox">
 						<Form
 							form={form}
@@ -57,20 +57,15 @@ const Request = () => {
 												option.children.toLowerCase().includes(input.toLowerCase())
 											}
 										>
-											<Option value="ADQUISICIÓN DE DATOS DE TELÉFONO CELULAR (DISPOSITIVOS MOVILES)">
-												ADQUISICIÓN DE DATOS DE TELÉFONO CELULAR (DISPOSITIVOS MOVILES)
-											</Option>
-											<Option value="EXTRACCIÓN DE INFORMACIÓN DE EQUIPOS DE GRABACIÓN DE VIDEO">
-												EXTRACCIÓN DE INFORMACIÓN DE EQUIPOS DE GRABACIÓN DE VIDEO
-											</Option>
-											<Option value="EXTRACCIÓN DE INFORMACIÓN DE DISPOSITIVOS DE ALMACENAMIENTO DIGITAL">
-												EXTRACCIÓN DE INFORMACIÓN DE DISPOSITIVOS DE ALMACENAMIENTO DIGITAL
-											</Option>
-											<Option value="IDENTIFICACIÓN DE EQUIPOS">IDENTIFICACIÓN DE EQUIPOS</Option>
-											<Option value="INVESTIGACION DE SERVICIOS DE INTERNET">
-												INVESTIGACION DE SERVICIOS DE INTERNET
-											</Option>
-											<Option value="INVESTIGACIÓN DE SISTEMAS">INVESTIGACIÓN DE SISTEMAS</Option>
+											<Option value="ADQUISICION DE DATOS DE TELEFONO CELULAR (DISPOSITIVOS MOVILES)">ADQUISICION DE DATOS DE TELEFONO CELULAR (DISPOSITIVOS MOVILES)</Option>
+											<Option value="EXTRACCION DE INFORMACION DE DISPOSITIVOS DE ALMACENAMIENTO DIGITAL">EXTRACCION DE INFORMACION DE DISPOSITIVOS DE ALMACENAMIENTO DIGITAL</Option>
+											<Option value="EXTRACCIÓN DE INFORMACIÓN DE SISTEMAS DE GRABACIÓN DE VIDEO">EXTRACCIÓN DE INFORMACIÓN DE SISTEMAS DE GRABACIÓN DE VIDEO</Option>
+											<Option value="IDENTIFICACION DE EQUIPOS">IDENTIFICACION DE EQUIPOS</Option>
+											<Option value="INFORMES">INFORMES</Option>
+											<Option value="INVESTIGACION DE SISTEMAS">INVESTIGACION DE SISTEMAS</Option>
+											<Option value="INVESTIGACION SOBRE SERVICIOS Y APLICACIONES DE INTERNET">INVESTIGACION SOBRE SERVICIOS Y APLICACIONES DE INTERNET</Option>
+											<Option value="VALORACIÓN DE DAÑOS EN EQUIPOS">VALORACIÓN DE DAÑOS EN EQUIPOS</Option>
+											
 										</Select>
 									</Form.Item>
 								</Col>
