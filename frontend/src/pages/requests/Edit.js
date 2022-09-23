@@ -1,32 +1,40 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Form, Input, Button, DatePicker, Select, Card } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Row, Col, Form, Input, Button, DatePicker, Select, Card, Switch } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import moment from "moment";
 import API from "../../util/api";
 
 const { Option } = Select;
 
 const Request = () => {
+	const params = useParams();
 	const navigate = useNavigate();
-	const CURRENT_YEAR = new Date().getFullYear();
 	const [form] = Form.useForm();
-
 	const [agencies, setAgencies] = useState([]);
+
 	useEffect(() => {
 		API.get("/agencies").then((response) => {
 			if (response.ok) setAgencies(response.data);
 		});
+
+		API.get(`/requests/${params.id}`).then((response) => {
+			if (response.ok) {
+				form.setFieldsValue({
+					...response.data,
+					letter_date: moment(response.data.letter_date),
+					submission_date: moment(response.data.submission_date),
+				});
+			}
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const onFinish = (values) => {
-		API.post("/requests", {
+		API.put(`/requests/${params.id}`, {
 			body: JSON.stringify(values),
 		}).then((response) => {
 			if (response.ok) redirect();
 		});
-	};
-
-	const onReset = () => {
-		form.resetFields();
 	};
 
 	const redirect = () => navigate("/requests");
@@ -36,15 +44,7 @@ const Request = () => {
 			<Row type="flex" justify="space-between" gutter={16}>
 				<Col lg={12} xs={24}>
 					<Card bordered={false} className="criclebox">
-						<Form
-							form={form}
-							name="control-hooks"
-							onFinish={onFinish}
-							layout="vertical"
-							initialValues={{
-								ci_year: CURRENT_YEAR,
-							}}
-						>
+						<Form form={form} name="control-hooks" onFinish={onFinish} layout="vertical">
 							<Row type="flex" justify="space-between" gutter={16}>
 								<Col xs={24}>
 									<Form.Item label="Tipo" name="type" rules={[{ required: true }]}>
@@ -132,20 +132,22 @@ const Request = () => {
 										<Input />
 									</Form.Item>
 								</Col>
+								<Col xs={24}>
+									<Form.Item label="Estado ¿cerrada?" name="closed" valuePropName="checked">
+										<Switch checkedChildren="SI" unCheckedChildren="NO"/>
+									</Form.Item>
+								</Col>
 								<Col>
 									<Form.Item>
 										<Button htmlType="button" type="danger" onClick={redirect}>
 											Cancelar
-										</Button>
-										<Button htmlType="button" onClick={onReset}>
-											Limpiar
 										</Button>
 									</Form.Item>
 								</Col>
 								<Col>
 									<Form.Item>
 										<Button type="primary" htmlType="submit">
-											Registrar
+											Actualizar
 										</Button>
 									</Form.Item>
 								</Col>

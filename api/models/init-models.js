@@ -5,7 +5,11 @@ const modelRequest = require("./request.model");
 function initModels(sequelize) {
 	const Agency = modelAgency(sequelize, DataTypes);
 	const Request = modelRequest(sequelize, DataTypes);
-
+	Request.belongsTo(Agency, {
+		foreignKey: {
+			name: "agency_id"
+		},
+	});
 	return {
 		sequelize,
 		Request,

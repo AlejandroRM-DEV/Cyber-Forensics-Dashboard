@@ -6,6 +6,7 @@ import Extractions from "./pages/extractions";
 import CreateExtraction from "./pages/extractions/Create";
 import Requests from "./pages/requests";
 import CreateRequest from "./pages/requests/Create";
+import EditRequest from "./pages/requests/Edit";
 import Home from "./pages/Home";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
@@ -23,8 +24,10 @@ function App() {
 						<Route exact path="/home" element={<Home />} />
 						<Route exact path="/requests" element={<Requests />} />
 						<Route exact path="/requests/create" element={<CreateRequest />} />
+						<Route exact path="/requests/:id" element={<EditRequest />} />
 						<Route exact path="/extractions" element={<Extractions />} />
 						<Route exact path="/extractions/create" element={<CreateExtraction />} />
+						<Route exact path="/extractions/:id" element={<EditRequest />} />
 					</Route>
 					<Route path="*" exact element={<Navigate to="/home" />} />
 				</Routes>

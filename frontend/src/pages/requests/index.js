@@ -1,61 +1,81 @@
-import { Row, Col, Button, Card, Table } from "antd";
+import { Row, Col, Button, Card, Table, Tag } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import useFetch from "../../hooks/useFetch";
+import API from "../../util/api";
 
 const columns = [
 	{
-		title: "CI NÚMERO",
+		title: "ESTADO",
+		dataIndex: "closed",
+		key: "closed",
+		render: (_, { closed }) =>
+			closed ? (
+				<Tag color="green" key={closed}>
+					Cerrada
+				</Tag>
+			) : (
+				<Tag color="red" key={closed}>
+					Pendiente
+				</Tag>
+			),
+		filters: [
+			{
+				text: "Cerrada",
+				value: true,
+			},
+			{
+				text: "Pendiente",
+				value: false,
+			},
+		],
+		onFilter: (value, record) => record.closed === value,
+	},
+	{
+		title: "C.I.",
 		dataIndex: "ci_num",
 		key: "ci_num",
+		render: (_, record) => `${record.ci_num}/${record.ci_year}`,
 	},
 	{
-		title: "CI AÑO",
-		dataIndex: "ci_year",
-		key: "ci_year",
-	},
-	{
-		title: "OFICIO NÚMERO",
+		title: "OFICIO",
 		dataIndex: "letter_num",
 		key: "letter_num",
+		render: (_, record) => `${record.letter_num}/${record.letter_year}`,
 	},
 	{
-		title: "OFICIO AÑO",
-		dataIndex: "letter_year",
-		key: "letter_year",
-	},
-	{
-		title: "OFICIO FECHA",
+		title: "FECHA DE OFICIO",
 		dataIndex: "letter_date",
 		key: "letter_date",
 	},
 	{
-		title: "FECHA PRESENTACIÓN",
+		title: "FECHA DE PRESENTACIÓN",
 		dataIndex: "submission_date",
 		key: "submission_date",
 	},
 	{
-		title: "TIPO",
-		dataIndex: "type",
-		key: "type",
-	},
-	{
 		title: "AGENCIA",
-		dataIndex: "agency",
-		key: "agency",
+		dataIndex: ["agency", "name"],
+		key: "agency.name",
 	},
 	{
-		title: "AUTORIZADO POR",
-		dataIndex: "authorized_by",
-		key: "authorized_by",
+		title: "ACCIÓN",
+		key: "action",
+		render: (_, record) => (
+			<Link to={`/requests/${record.request_id}`}>
+				<Button type="dashed">VER</Button>
+			</Link>
+		),
 	},
 ];
 
 const Request = () => {
 	const [data, setData] = useState([]);
-	const { response: requests } = useFetch(`${process.env.REACT_APP_BACKEND_URL}/requests`);
 
-	useEffect(() => requests && setData(requests.data), [requests]);
+	useEffect(() => {
+		API.get("/requests").then((response) => {
+			if (response.ok) setData(response.data);
+		});
+	}, []);
 
 	return (
 		<>
@@ -75,7 +95,7 @@ const Request = () => {
 							<Table
 								columns={columns}
 								dataSource={data}
-								pagination={false}
+								pagination={true}
 								className="ant-border-space"
 								rowKey="request_id"
 							/>

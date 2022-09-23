@@ -65,7 +65,6 @@ const Extractions = () => {
 							<Table
 								columns={columns}
 								dataSource={data}
-								pagination={false}
 								className="ant-border-space"
 								rowKey="id"
 							/>

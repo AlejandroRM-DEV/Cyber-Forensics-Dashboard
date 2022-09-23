@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) =>
 	sequelize.define(
-		"Request",
+		"request",
 		{
 			request_id: {
 				type: DataTypes.INTEGER,
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) =>
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			agency: {
+			agency_id: {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
@@ -42,6 +42,9 @@ module.exports = (sequelize, DataTypes) =>
 			authorized_by: {
 				type: DataTypes.STRING,
 				allowNull: true,
+			},
+			closed: {
+				type: DataTypes.BOOLEAN,
 			},
 			user_id: {
 				type: DataTypes.STRING,

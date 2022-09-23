@@ -57,6 +57,8 @@ app.get("/login", async (req, res) => {
 
 app.get("/agencies", async (req, res) => forward(req, res));
 app.get("/requests", async (req, res) => forward(req, res));
+app.get("/requests/:id", async (req, res) => forward(req, res));
+app.put("/requests/:id", async (req, res) => forward(req, res));
 app.post("/requests", async (req, res) => forward(req, res));
 app.get("/extractions", async (req, res) => forward(req, res));
 app.post("/extractions", async (req, res) => forward(req, res));
@@ -69,7 +71,7 @@ const forward = async (req, res) => {
 		if (!auth) {
 			res.status(401).json({ ok: false, error: "Missing cookie" });
 			return;
-		}
+		} 
 		const response = await axios({
 			method: req.method,
 			url: `${process.env.API_URL}${req.url}`,
@@ -81,7 +83,7 @@ const forward = async (req, res) => {
 		});
 		res.json(response.data);
 	} catch (error) {
-		console.error(error);
+		//console.error(error);
 		if (error.response.status === 401) {
 			res.status(401).json({ ok: false, error: "Unauthorized to access data" });
 		} else if (error.response.status === 403) {

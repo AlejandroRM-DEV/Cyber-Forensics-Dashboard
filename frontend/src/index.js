@@ -12,11 +12,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
+import { ConfigProvider } from "antd";
+import esES from "antd/es/locale/es_ES";
 import App from "./App";
 
 ReactDOM.render(
-	<BrowserRouter>
-		<App />
-	</BrowserRouter>,
+	<ConfigProvider locale={esES}>
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
+	</ConfigProvider>,
 	document.getElementById("root")
 );

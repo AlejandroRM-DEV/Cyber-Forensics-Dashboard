@@ -28,7 +28,7 @@ app.use(compression());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get("/agencies", async (req, res) => {
+app.get("/agencies", guard.check(["read:agencies"]), async (req, res) => {
 	Agency.findAll({ order: sequelize.col("name") })
 		.then((agencies) => {
 			res.json({ ok: true, data: agencies });
@@ -39,8 +39,7 @@ app.get("/agencies", async (req, res) => {
 });
 
 app.get("/requests", guard.check(["read:requests"]), async (req, res) => {
-	console.log(req.headers['x-user-id'])
-	Request.findAll()
+	Request.findAll({ include: "agency" })
 		.then((users) => {
 			res.json({ ok: true, data: users });
 		})
@@ -49,8 +48,29 @@ app.get("/requests", guard.check(["read:requests"]), async (req, res) => {
 		});
 });
 
+app.get("/requests/:id", guard.check(["read:requests"]), async (req, res) => {
+	Request.findOne({ include: "agency", where: { request_id: req.params.id } })
+		.then((user) => {
+			res.json({ ok: true, data: user });
+		})
+		.catch((err) => {
+			console.log(err);
+			res.status(500).json({ ok: false, error: err });
+		});
+});
+
+app.put("/requests/:id", guard.check(["update:requests"]), async (req, res) => {
+	Request.update({ ...req.body }, { where: { request_id: req.params.id } })
+		.then((count) => {
+			res.json({ ok: true, data: count });
+		})
+		.catch((err) => {
+			res.status(500).json({ ok: false, error: err });
+		});
+});
+
 app.post("/requests", guard.check(["create:requests"]), async (req, res) => {
-	Request.create({ ...req.body, user_id: req.headers['x-user-id'] })
+	Request.create({ ...req.body, user_id: req.headers["x-user-id"] })
 		.then((id) => {
 			res.json({ ok: true, data: id });
 		})
