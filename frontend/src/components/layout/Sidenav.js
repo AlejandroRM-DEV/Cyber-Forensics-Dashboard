@@ -72,7 +72,7 @@ function Sidenav({ color }) {
 						<span className="label">Dashboard</span>
 					</NavLink>
 				</Menu.Item>
-				<Menu.Item className="menu-item-header" key="solicitudes">
+				<Menu.Item className="menu-item-header" key="section-1">
 					Informática
 				</Menu.Item>
 				<Menu.Item key="2">
@@ -99,6 +99,22 @@ function Sidenav({ color }) {
 							{tables}
 						</span>
 						<span className="label">Extracciones</span>
+					</NavLink>
+				</Menu.Item>
+				<Menu.Item className="menu-item-header" key="section-2">
+					Útil
+				</Menu.Item>
+				<Menu.Item key="4">
+					<NavLink to="/date-time">
+						<span
+							className="icon"
+							style={{
+								background: page === "date-time" ? color : "",
+							}}
+						>
+							{tables}
+						</span>
+						<span className="label">NVR DateTime</span>
 					</NavLink>
 				</Menu.Item>
 			</Menu>

@@ -2,7 +2,7 @@ import { useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import queryString from "query-string";
 import jwt_decode from "jwt-decode";
-import { UserContext } from "../contexts/UserContextMangement";
+import { UserContext } from "../contexts/UserContextManagement";
 import API from "../util/api";
 
 function Continue() {

@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { UserContextProvider } from "./contexts/UserContextMangement";
+import { UserContextProvider } from "./contexts/UserContextManagement";
 import SignIn from "./pages/SignIn";
 import Continue from "./pages/Continue";
 import Extractions from "./pages/extractions";
@@ -8,6 +8,7 @@ import Requests from "./pages/requests";
 import CreateRequest from "./pages/requests/Create";
 import EditRequest from "./pages/requests/Edit";
 import Home from "./pages/Home";
+import DateTime from "./pages/datetime";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
@@ -28,6 +29,7 @@ function App() {
 						<Route exact path="/extractions" element={<Extractions />} />
 						<Route exact path="/extractions/create" element={<CreateExtraction />} />
 						<Route exact path="/extractions/:id" element={<EditRequest />} />
+						<Route exact path="/date-time" element={<DateTime />} />
 					</Route>
 					<Route path="*" exact element={<Navigate to="/home" />} />
 				</Routes>
