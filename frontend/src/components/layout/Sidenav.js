@@ -114,7 +114,20 @@ function Sidenav({ color }) {
 						>
 							{tables}
 						</span>
-						<span className="label">NVR DateTime</span>
+						<span className="label">NVR horarios</span>
+					</NavLink>
+				</Menu.Item>
+				<Menu.Item key="5">
+					<NavLink to="/image-sequence">
+						<span
+							className="icon"
+							style={{
+								background: page === "image-sequence" ? color : "",
+							}}
+						>
+							{tables}
+						</span>
+						<span className="label">Secuencia imágenes</span>
 					</NavLink>
 				</Menu.Item>
 			</Menu>

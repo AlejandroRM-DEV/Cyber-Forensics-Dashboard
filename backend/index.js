@@ -4,11 +4,15 @@ const helmet = require("helmet");
 const compression = require("compression");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const bodyParser = require("body-parser");
 const axios = require("axios");
-const jwt_decode = require('jwt-decode');
+const jwt_decode = require("jwt-decode");
 const NodeCache = require("node-cache");
 const cache = new NodeCache();
+const fs = require("fs/promises");
+const multer = require("multer");
+const { PythonShell } = require("python-shell");
+const { randomUUID } = require("crypto");
+const path = require("path");
 
 const app = express();
 
@@ -21,8 +25,18 @@ app.use(
 app.use(helmet());
 app.use(compression());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, "uploads/");
+	},
+	filename: function (req, file, cb) {
+		cb(null, `${randomUUID()}${path.extname(file.originalname)}`);
+	},
+});
+const upload = multer({ storage: storage });
 
 app.get("/login", async (req, res) => {
 	const code = req.query.code;
@@ -63,6 +77,27 @@ app.post("/requests", async (req, res) => forward(req, res));
 app.get("/extractions", async (req, res) => forward(req, res));
 app.post("/extractions", async (req, res) => forward(req, res));
 
+app.post("/secuencia-imagenes", upload.fields([{ name: "imgsSecuencia" }]), (req, res) => {
+	const data = { ...req.body, ...req.files, docx: "sec-img.docx", docxNew: `${randomUUID()}.docx` };
+	for (const archivo in req.files) {
+		data[archivo] = data[archivo].map((file) => path.resolve(__dirname, file.path));
+	}
+	PythonShell.run("./python/main.py", { mode: "json", args: [JSON.stringify(data)] }, (err) => {
+		for (const archivo in req.files) {
+			data[archivo].forEach((archivo) => fs.unlink(archivo));
+		}
+		if (err) res.json({ ok: false, error: err });
+		else res.json({ ok: true, error: null, nombreArchivo: data.docxNew });
+	});
+});
+
+app.get("/file/:name", upload.none(), (req, res) => {
+	const pathToFile = path.resolve(__dirname, "python/", "output/", req.params.name);
+	res.download(pathToFile, "file.docx", () => {
+		fs.unlink(pathToFile);
+	});
+});
+
 app.listen(process.env.PORT || 3001, () => console.log("Started"));
 
 const forward = async (req, res) => {
@@ -71,14 +106,14 @@ const forward = async (req, res) => {
 		if (!auth) {
 			res.status(401).json({ ok: false, error: "Missing cookie" });
 			return;
-		} 
+		}
 		const response = await axios({
 			method: req.method,
 			url: `${process.env.API_URL}${req.url}`,
 			data: req.body,
 			headers: {
 				Authorization: `Bearer ${auth.access_token}`,
-				'x-user-id': jwt_decode(auth.access_token).sub,
+				"x-user-id": jwt_decode(auth.access_token).sub,
 			},
 		});
 		res.json(response.data);

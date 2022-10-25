@@ -9,6 +9,7 @@ import CreateRequest from "./pages/requests/Create";
 import EditRequest from "./pages/requests/Edit";
 import Home from "./pages/Home";
 import DateTime from "./pages/datetime";
+import ImageSequence from "./pages/image-sequence";
 import Main from "./components/layout/Main";
 import "antd/dist/antd.css";
 import "./assets/styles/main.css";
@@ -30,6 +31,7 @@ function App() {
 						<Route exact path="/extractions/create" element={<CreateExtraction />} />
 						<Route exact path="/extractions/:id" element={<EditRequest />} />
 						<Route exact path="/date-time" element={<DateTime />} />
+						<Route exact path="/image-sequence" element={<ImageSequence />} />
 					</Route>
 					<Route path="*" exact element={<Navigate to="/home" />} />
 				</Routes>
