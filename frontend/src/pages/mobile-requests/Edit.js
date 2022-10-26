@@ -37,7 +37,7 @@ const Request = () => {
 		});
 	};
 
-	const redirect = () => navigate("/requests");
+	const redirect = () => navigate("/mobile-requests");
 
 	return (
 		<>

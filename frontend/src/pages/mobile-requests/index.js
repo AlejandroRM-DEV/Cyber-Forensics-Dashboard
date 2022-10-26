@@ -1,35 +1,9 @@
-import { Row, Col, Button, Card, Table, Tag } from "antd";
+import { Row, Col, Button, Card, Table } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import API from "../../util/api";
 
 const columns = [
-	{
-		title: "ESTADO",
-		dataIndex: "closed",
-		key: "closed",
-		render: (_, { closed }) =>
-			closed ? (
-				<Tag color="green" key={closed}>
-					Cerrada
-				</Tag>
-			) : (
-				<Tag color="red" key={closed}>
-					Pendiente
-				</Tag>
-			),
-		filters: [
-			{
-				text: "Cerrada",
-				value: true,
-			},
-			{
-				text: "Pendiente",
-				value: false,
-			},
-		],
-		onFilter: (value, record) => record.closed === value,
-	},
 	{
 		title: "C.I.",
 		dataIndex: "ci_num",
@@ -61,7 +35,7 @@ const columns = [
 		title: "ACCIÓN",
 		key: "action",
 		render: (_, record) => (
-			<Link to={`/requests/${record.request_id}`}>
+			<Link to={`/mobile-requests/${record.request_id}`}>
 				<Button type="dashed">VER</Button>
 			</Link>
 		),
@@ -80,13 +54,13 @@ const Request = () => {
 	return (
 		<>
 			<Row gutter={[24, 0]}>
-				<Col xs="24" xl={24}>
+				<Col xs={24}>
 					<Card
 						bordered={false}
 						className="criclebox tablespace mb-24"
-						title="Solicitudes"
+						title="Solicitudes de dispositivos móviles"
 						extra={
-							<Link to="/requests/create">
+							<Link to="/mobile-requests/create">
 								<Button type="primary">Registrar</Button>
 							</Link>
 						}

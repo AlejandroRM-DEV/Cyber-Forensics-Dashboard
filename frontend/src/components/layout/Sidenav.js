@@ -76,35 +76,22 @@ function Sidenav({ color }) {
 					Informática
 				</Menu.Item>
 				<Menu.Item key="2">
-					<NavLink to="/requests">
+					<NavLink to="/mobile-requests">
 						<span
 							className="icon"
 							style={{
-								background: page === "requests" ? color : "",
+								background: page === "mobile-requests" ? color : "",
 							}}
 						>
 							{tables}
 						</span>
-						<span className="label">Solicitudes</span>
-					</NavLink>
-				</Menu.Item>
-				<Menu.Item key="3">
-					<NavLink to="/extractions">
-						<span
-							className="icon"
-							style={{
-								background: page === "extractions" ? color : "",
-							}}
-						>
-							{tables}
-						</span>
-						<span className="label">Extracciones</span>
+						<span className="label">Solicitudes de móviles</span>
 					</NavLink>
 				</Menu.Item>
 				<Menu.Item className="menu-item-header" key="section-2">
 					Útil
 				</Menu.Item>
-				<Menu.Item key="4">
+				<Menu.Item key="3">
 					<NavLink to="/date-time">
 						<span
 							className="icon"
@@ -117,7 +104,7 @@ function Sidenav({ color }) {
 						<span className="label">NVR horarios</span>
 					</NavLink>
 				</Menu.Item>
-				<Menu.Item key="5">
+				<Menu.Item key="4">
 					<NavLink to="/image-sequence">
 						<span
 							className="icon"

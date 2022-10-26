@@ -2,11 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { UserContextProvider } from "./contexts/UserContextManagement";
 import SignIn from "./pages/SignIn";
 import Continue from "./pages/Continue";
-import Extractions from "./pages/extractions";
-import CreateExtraction from "./pages/extractions/Create";
-import Requests from "./pages/requests";
-import CreateRequest from "./pages/requests/Create";
-import EditRequest from "./pages/requests/Edit";
+import Requests from "./pages/mobile-requests";
+import CreateRequest from "./pages/mobile-requests/Create";
+import EditRequest from "./pages/mobile-requests/Edit";
 import Home from "./pages/Home";
 import DateTime from "./pages/datetime";
 import ImageSequence from "./pages/image-sequence";
@@ -24,11 +22,9 @@ function App() {
 					<Route path="/continue" exact element={<Continue />} />
 					<Route element={<Main />}>
 						<Route exact path="/home" element={<Home />} />
-						<Route exact path="/requests" element={<Requests />} />
-						<Route exact path="/requests/create" element={<CreateRequest />} />
-						<Route exact path="/requests/:id" element={<EditRequest />} />
-						<Route exact path="/extractions" element={<Extractions />} />
-						<Route exact path="/extractions/create" element={<CreateExtraction />} />
+						<Route exact path="/mobile-requests" element={<Requests />} />
+						<Route exact path="/mobile-requests/create" element={<CreateRequest />} />
+						<Route exact path="/mobile-requests/:id" element={<EditRequest />} />
 						<Route exact path="/extractions/:id" element={<EditRequest />} />
 						<Route exact path="/date-time" element={<DateTime />} />
 						<Route exact path="/image-sequence" element={<ImageSequence />} />
