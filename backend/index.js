@@ -38,7 +38,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-app.get("/login", async (req, res) => {
+app.get("/login", upload.none(), async (req, res) => {
 	const code = req.query.code;
 
 	if (!code) {
@@ -69,13 +69,13 @@ app.get("/login", async (req, res) => {
 		});
 });
 
-app.get("/agencies", async (req, res) => forward(req, res));
-app.get("/requests", async (req, res) => forward(req, res));
-app.get("/requests/:id", async (req, res) => forward(req, res));
-app.put("/requests/:id", async (req, res) => forward(req, res));
-app.post("/requests", async (req, res) => forward(req, res));
-app.get("/extractions", async (req, res) => forward(req, res));
-app.post("/extractions", async (req, res) => forward(req, res));
+app.get("/agencies", upload.none(), async (req, res) => forward(req, res));
+app.get("/requests", upload.none(), async (req, res) => forward(req, res));
+app.get("/requests/:id", upload.none(), async (req, res) => forward(req, res));
+app.put("/requests/:id", upload.none(), async (req, res) => forward(req, res));
+app.post("/requests", upload.none(), async (req, res) => forward(req, res));
+app.get("/extractions", upload.none(), async (req, res) => forward(req, res));
+app.post("/extractions", upload.none(), async (req, res) => forward(req, res));
 
 app.post("/secuencia-imagenes", upload.fields([{ name: "imgsSecuencia" }]), (req, res) => {
 	const data = { ...req.body, ...req.files, docx: "sec-img.docx", docxNew: `${randomUUID()}.docx` };

@@ -133,13 +133,6 @@ const DateTime = () => {
 										</Button>
 									</Form.Item>
 								</Col>
-								<Col>
-									<Form.Item>
-										<Button type="primary" htmlType="submit">
-											Registrar
-										</Button>
-									</Form.Item>
-								</Col>
 							</Row>
 						</Form>
 					</Card>

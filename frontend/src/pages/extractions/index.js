@@ -43,8 +43,7 @@ const Extractions = () => {
 			credentials: "include",
 		})
 			.then((res) => res.json())
-			.then((res) => setData(res.data))
-			.catch((error) => console.error(error));
+			.then((res) => setData(res.data));
 	}, []);
 
 	return (

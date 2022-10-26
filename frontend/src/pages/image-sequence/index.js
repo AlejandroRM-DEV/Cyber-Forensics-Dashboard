@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Row, Col, Form, Button, Upload, InputNumber, Card, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 
 const ImageSequence = () => {
+	const [loading, setLoading] = useState(false);
+
 	const onFinish = (values) => {
+		setLoading(true);
 		const formData = new FormData();
 		formData.append("columnas", values.columnas);
 		formData.append(
@@ -31,7 +35,7 @@ const ImageSequence = () => {
 						}).click();
 					});
 			})
-			.catch((err) => console.err("Ocurrió un error", err));
+			.finally(() => setLoading(false));
 	};
 
 	const onFinishFailed = () => {
@@ -53,23 +57,23 @@ const ImageSequence = () => {
 							layout="vertical"
 							initialValues={{
 								columnas: 1,
-								ancho: 15,
+								ancho: 16,
 							}}
 						>
 							<Row type="flex" justify="center" align="bottom" gutter={16}>
 								<Col span={8}>
 									<Form.Item label="Columnas" name="columnas" rules={[{ required: true }]}>
-										<InputNumber addonAfter="#" min={1} max={4} />
+										<InputNumber addonAfter="#" min={1} max={4} style={{ width: "100%" }} />
 									</Form.Item>
 								</Col>
 								<Col span={8}>
 									<Form.Item label="Ancho" name="ancho" rules={[{ required: true }]}>
-										<InputNumber addonAfter="cm" min={1} />
+										<InputNumber addonAfter="cm" min={1} max={17} style={{ width: "100%" }} />
 									</Form.Item>
 								</Col>
 								<Col span={8}>
 									<Form.Item>
-										<Button type="primary" htmlType="submit">
+										<Button type="primary" htmlType="submit" loading={loading}>
 											Generar archivo
 										</Button>
 									</Form.Item>

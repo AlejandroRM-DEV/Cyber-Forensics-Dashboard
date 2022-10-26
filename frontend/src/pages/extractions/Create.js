@@ -25,7 +25,6 @@ const Extraction = () => {
 					})
 				)
 			)
-			.catch((error) => console.error(error));
 	}, []);
 
 	const onFinish = (values) => {
@@ -39,7 +38,6 @@ const Extraction = () => {
 		})
 			.then((res) => res.json())
 			.then(() => redirect())
-			.catch((error) => console.error(error));
 	};
 
 	const onReset = () => {
